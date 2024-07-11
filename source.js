@@ -1,6 +1,8 @@
-crossesTurn = true;
-gameOver = false;
-turnCounter = 0;
+gameManager = {
+    crossesTurn: true,
+    gameOver: false,
+    turnCounter: 0,
+}
 
 gameboard = [
     " ", " ", " ",
@@ -8,87 +10,123 @@ gameboard = [
     " ", " ", " "
 ]
 
+createGrid();
 
-while (!gameOver) {
-    printBoard();
-    gameLoop();
-    if(checkWin()) {
-        gameOver = true;
-    }
+function createGrid() {
+    const Gameboard = document.querySelector("#gameboard");
     
-}
 
-function gameLoop() {
-    if (crossesTurn) {
-        console.log("Crosses turn. . .");
-        crossLocation = prompt("CROSS: Enter a number between 1 - 9: ");
-        if (gameboard[crossLocation - 1] == " ") {
-            gameboard[crossLocation - 1] = "X";
-            crossesTurn = false;
-            turnCounter++;
-        }
-        else {
-            console.log("TILE TAKEN");
-        }
-    }
-    else if (!crossesTurn) {
-        console.log("Naughts turn. . .");
-        naughtLocation = prompt("NAUGHT: Enter a number between 1 - 9: ");
-        if (gameboard[naughtLocation - 1] == " ") {
-            gameboard[naughtLocation - 1] = "0";
-            crossesTurn = true;
-            turnCounter++;
-        }
-        else {
-            console.log("TILE TAKEN");
-        }
+    for (let i = 0; i < 9; i++) {
+        let tilei = document.querySelector(`#tile${i}`);
+        tilei.addEventListener("click", () => playerInput(tilei.id))
     }
 }
 
-function printBoard() {
-    for (let i = 0; i < gameboard.length; i += 3) {
-        console.log(gameboard[i] + " | " + gameboard[i + 1] + " | " + gameboard[i + 2]);
-        console.log(" "); // to stop identical console logs collapsing
+function playerInput(tileid) {
+    tileClicked = document.querySelector("#" + tileid);
+    if (!gameManager.gameOver) {
+        if (tileClicked.textContent == "") {
+            if (gameManager.crossesTurn) {
+                tileClicked.textContent = "X";
+                gameboard[tileid[4]] = "X";
+                gameManager.crossesTurn = false;
+                gameManager.turnCounter++;
+            } else {
+                tileClicked.textContent = "0";
+                gameboard[tileid[4]] = "0";
+                gameManager.crossesTurn = true;
+                gameManager.turnCounter++;
+            }
+            checkWin();
+            updateGameCommentator();
+            if (gameManager.gameOver) {
+                endGame();
+            }
+
+        }
     }
+
 }
 
+function updateGameCommentator() {
+    let gameCommentator = document.querySelector("#gameCommentator");
+    if (gameManager.crossesTurn) {
+        gameCommentator.textContent = "X Turn";
+    } else {
+        gameCommentator.textContent = "0 Turn";
+    }
+    if (gameManager.gameOver && gameManager.crossesTurn && gameManager.turnCounter < 9) {
+        gameCommentator.textContent = "0 WINS!";
+    } else if (gameManager.gameOver && !gameManager.crossesTurn && gameManager.turnCounter < 9) {
+        gameCommentator.textContent = "X WINS!";
+    }
+    else if(gameManager.turnCounter >= 9) {
+        gameCommentator.textContent = "DRAW";
+    }
+}
 
 function checkWin() {
     if (gameboard[0] == gameboard[1] && gameboard[1] == gameboard[2] && gameboard[0] != ' ') {
         console.log("Winner");
-        return true;
+        gameManager.gameOver = true;
     }
     else if (gameboard[3] == gameboard[4] && gameboard[4] == gameboard[5] && gameboard[3] != ' ') {
         console.log("Winner");
-        return true;
+        gameManager.gameOver = true;
     }
     else if (gameboard[6] == gameboard[7] && gameboard[7] == gameboard[8] && gameboard[6] != ' ') {
         console.log("Winner");
-        return true;
+        gameManager.gameOver = true;
     }
     else if (gameboard[0] == gameboard[3] && gameboard[3] == gameboard[6] && gameboard[0] != ' ') {
         console.log("Winner");
-        return true;
+        gameManager.gameOver = true;
     }
     else if (gameboard[1] == gameboard[4] && gameboard[4] == gameboard[7] && gameboard[1] != ' ') {
         console.log("Winner");
-        return true;
+        gameManager.gameOver = true;
     }
     else if (gameboard[2] == gameboard[5] && gameboard[5] == gameboard[8] && gameboard[2] != ' ') {
         console.log("Winner");
+        gameManager.gameOver = true;
     }
     else if (gameboard[0] == gameboard[4] && gameboard[4] == gameboard[8] && gameboard[0] != ' ') {
         console.log("Winner");
-        return true;
+        gameManager.gameOver = true;
     }
     else if (gameboard[2] == gameboard[4] && gameboard[4] == gameboard[6] && gameboard[2] != ' ') {
         console.log("Winner");
-        return true;
+        gameManager.gameOver = true;
     }
-    else if (turnCounter >= 9) {
+    else if (gameManager.turnCounter >= 9) {
         console.log("Draw");
+        gameManager.gameOver = true;
     }
-    else {
-        return false;
+
+}
+
+function endGame() {
+    let gameoverContainer = document.getElementById("gameoverContainer");
+    let play = document.getElementById("playBtn");
+    gameoverContainer.style.display = "flex";
+    play.addEventListener("click", () => {
+        restartGame();
+        gameoverContainer.style.display = "none";
+
+    })
+}
+
+function restartGame() {
+    console.log("restart");
+    let tiles = document.querySelectorAll(".tile");
+    tiles.forEach(tile => {
+        tile.textContent = "";
+    });
+    gameManager.crossesTurn = true;
+    gameManager.gameOver = false;
+    gameManager.turnCounter = 0;
+    for (let i = 0; i < gameboard.length; i++) {
+        gameboard[i] = " ";
     }
+    updateGameCommentator();
 }

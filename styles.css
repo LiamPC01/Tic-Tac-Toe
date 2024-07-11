@@ -1,0 +1,105 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: black;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+h1,
+h2,
+p,
+button {
+    text-align: center;
+    color: white;
+}
+
+#gameboard {
+    /* border: 2px solid black; */
+    display: flex;
+    width: 606px;
+    height: 606px;
+    align-self: center;
+    flex-wrap: wrap;
+
+
+
+}
+
+.tile {
+    /* border: 1px solid white; */
+    width: 200px;
+    height: 200px;
+    /* color: black; */
+    background-color: black;
+    border: none;
+}
+
+#gameoverContainer {
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background: rgb(31, 31, 31);
+    width: 100vw;
+    height: 20vh;
+    top: 40%;
+    display: none;
+}
+
+#playBtn {
+    font-size: 50px;
+    border-radius: 20px;
+    background-color: rgb(95, 95, 95);
+    padding: 10px;
+    border: solid 3px black;
+    font-weight: 100;
+}
+
+#tile0 {
+    border-bottom: solid 1px white;
+    border-right: solid 1px white;
+}
+
+#tile1 {
+    border-bottom: solid 1px white;
+    border-right: solid 1px white;
+}
+
+#tile2 {
+    border-bottom: solid 1px white;
+
+}
+
+#tile3 {
+    border-bottom: solid 1px white;
+    border-right: solid 1px white;
+}
+
+#tile4 {
+    border-bottom: solid 1px white;
+    border-right: solid 1px white;
+}
+
+#tile5 {
+    border-bottom: solid 1px white;
+}
+
+#tile6 {
+    border-right: solid 1px white;
+
+
+}
+
+#tile7 {
+    border-right: solid 1px white;
+
+}
+
+#tile8 {}
+
+button {
+    font-size: 100px;
+    font-weight: 1000;
+}
